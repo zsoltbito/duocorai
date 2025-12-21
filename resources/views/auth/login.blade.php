@@ -1,47 +1,49 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <div class="w-full max-w-md p-8 rounded-2xl bg-white/10 border border-white/20 shadow-2xl backdrop-blur-xl">
+        <div class="mb-6">
+            <h1 class="text-2xl font-semibold">Operations AI</h1>
+            <p class="text-sm opacity-70">Valós idejű üzemeltetés + automatizált ticketing</p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+        <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div>
+                <x-text-input id="email" class="block w-full bg-black/40 border-white/15 rounded-xl"
+                              type="email" name="email" :value="old('email')" required autofocus
+                              placeholder="Email" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
+
+            <div>
+                <x-text-input id="password" class="block w-full bg-black/40 border-white/15 rounded-xl"
+                              type="password" name="password" required
+                              placeholder="Jelszó" />
+                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            </div>
+
+            <div class="flex items-center justify-between text-sm opacity-80">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="remember" class="rounded">
+                    Emlékezz rám
+                </label>
+
+                @if (Route::has('password.request'))
+                    <a class="underline" href="{{ route('password.request') }}">
+                        Elfelejtetted?
+                    </a>
+                @endif
+            </div>
+
+            <button class="w-full py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold">
+                Belépés
+            </button>
+        </form>
+
+        <div class="mt-6 text-xs opacity-60">
+            Secure • AI-powered • Real-time
         </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+    </div>
 </x-guest-layout>
