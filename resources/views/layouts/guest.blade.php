@@ -12,5 +12,6 @@
 <div class="relative z-10 min-h-screen flex items-center justify-center p-4">
     {{ $slot }}
 </div>
+
 </body>
 </html>

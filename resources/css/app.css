@@ -1,12 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base */
 html,
 body {
     background: #000;
+    color: #fff;
 }
+
 #bg-canvas {
     position: fixed;
     inset: 0;
     z-index: 0;
+}
+
+/* =========================
+   Auth UI – Tailwind safe
+   ========================= */
+
+@keyframes authShake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(-6px);
+    }
+    30% {
+        transform: translateX(6px);
+    }
+    45% {
+        transform: translateX(-4px);
+    }
+    60% {
+        transform: translateX(4px);
+    }
+    75% {
+        transform: translateX(-2px);
+    }
+    90% {
+        transform: translateX(2px);
+    }
+}
+
+.auth-shake {
+    animation: authShake 420ms ease-in-out;
+}
+
+/* Input base */
+.auth-input {
+    @apply w-full rounded-2xl bg-black/40 border border-white/15
+           px-4 py-3 text-white placeholder-white/40 outline-none
+           transition;
+}
+
+/* Focus state – csak Tailwind utility */
+.auth-input:focus {
+    @apply border-indigo-500/80 ring-4 ring-indigo-500/20;
+}
+
+/* Buttons */
+.auth-btn {
+    @apply w-full rounded-2xl py-3 font-semibold transition;
+}
+
+.auth-btn-primary {
+    @apply bg-indigo-600 hover:bg-indigo-500;
+}
+
+/* Info chips */
+.auth-chip {
+    @apply inline-flex items-center gap-2 rounded-full
+           bg-white/5 border border-white/10
+           px-3 py-1 text-xs text-white/70;
+}
+
+/* Dark scrollbar */
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.18);
 }

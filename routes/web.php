@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OpsDashboardController;
 
 Route::get("/", function () {
     return view("welcome");
@@ -25,6 +26,12 @@ Route::middleware("auth")->group(function () {
     );
 });
 Route::middleware(["auth"])->group(function () {
-    Route::get("/ops", fn() => view("ops.dashboard"))->name("ops.dashboard");
+    Route::get("/ops", [OpsDashboardController::class, "index"])->name(
+        "ops.dashboard",
+    );
+    Route::get("/ops/api/snapshot", [
+        OpsDashboardController::class,
+        "snapshot",
+    ])->name("ops.snapshot");
 });
 require __DIR__ . "/auth.php";
