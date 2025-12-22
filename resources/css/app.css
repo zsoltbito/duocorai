@@ -88,3 +88,8 @@ body {
 *::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.18);
 }
+/* Topnav spacing fix for canvas */
+body > nav {
+    position: relative;
+    z-index: 20;
+}
