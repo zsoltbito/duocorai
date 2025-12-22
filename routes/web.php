@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OpsDashboardController;
+use App\Http\Controllers\SchedulerController;
 
 Route::get("/", function () {
     return view("welcome");
@@ -33,5 +34,33 @@ Route::middleware(["auth"])->group(function () {
         OpsDashboardController::class,
         "snapshot",
     ])->name("ops.snapshot");
+});
+Route::middleware(["auth"])->group(function () {
+    Route::get("/scheduler", [SchedulerController::class, "index"])->name(
+        "scheduler.index",
+    );
+    Route::get("/scheduler/create", [
+        SchedulerController::class,
+        "create",
+    ])->name("scheduler.create");
+    Route::post("/scheduler", [SchedulerController::class, "store"])->name(
+        "scheduler.store",
+    );
+    Route::get("/scheduler/{task}/edit", [
+        SchedulerController::class,
+        "edit",
+    ])->name("scheduler.edit");
+    Route::put("/scheduler/{task}", [
+        SchedulerController::class,
+        "update",
+    ])->name("scheduler.update");
+    Route::post("/scheduler/{task}/toggle", [
+        SchedulerController::class,
+        "toggle",
+    ])->name("scheduler.toggle");
+    Route::post("/scheduler/{task}/run-now", [
+        SchedulerController::class,
+        "runNow",
+    ])->name("scheduler.runNow");
 });
 require __DIR__ . "/auth.php";
