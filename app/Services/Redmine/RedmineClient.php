@@ -2,40 +2,32 @@
 
 namespace App\Services\Redmine;
 
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class RedmineClient
 {
-    private Client $http;
+    public function createIssue(
+        string $project,
+        string $title,
+        string $description
+    ): array {
+        $res = Http::withHeaders([
+            'X-Redmine-API-Key' => config('redmine.api_key'),
+        ])->post(
+            rtrim(config('redmine.url'), '/') . '/issues.json',
+            [
+                'issue' => [
+                    'project_id' => $project,
+                    'subject' => $title,
+                    'description' => $description,
+                ],
+            ]
+        );
 
-    public function __construct()
-    {
-        $base = rtrim((string) env("REDMINE_BASE_URL"), "/") . "/";
-
-        $this->http = new Client([
-            "base_uri" => $base,
-            "timeout" => 20,
-            "headers" => [
-                "X-Redmine-API-Key" => (string) env("REDMINE_API_KEY"),
-                "Accept" => "application/json",
-                "Content-Type" => "application/json",
-            ],
-        ]);
-    }
-
-    public function createIssue(array $issue): int
-    {
-        $res = $this->http->post("issues.json", [
-            "json" => ["issue" => $issue],
-        ]);
-
-        $data = json_decode((string) $res->getBody(), true);
-        $id = (int) ($data["issue"]["id"] ?? 0);
-
-        if ($id <= 0) {
-            throw new \RuntimeException("Redmine did not return issue.id");
+        if (!$res->successful()) {
+            throw new \RuntimeException('Redmine issue create failed');
         }
 
-        return $id;
+        return $res->json('issue');
     }
 }
